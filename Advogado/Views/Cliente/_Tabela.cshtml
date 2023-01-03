@@ -1,0 +1,36 @@
+﻿@using Advogado.Models
+@model IEnumerable<Cliente>
+
+<table id="example" class="table table-responsive table-striped table-bordered display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone Móvel</th>
+            <th>Telefone Fixo</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Nome</td>
+            <td>@item.Cpf</td>
+            <td>@item.TelefoneMovel</td>
+            <td>@(string.IsNullOrEmpty(item.TelefoneFixo) ? "Não possui" : item.TelefoneFixo)</td>
+            <td class="text-nowrap" width="10">
+                <a class="btn btn-circle btn-info btn-sm" title="Editar" href="@Url.Action("Editar", new { id = item.ClienteId })" data-togle="tooltip">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+                @if (Advogado.Models.Funcionario.FuncionarioLogado().Perfil == Advogado.Models.Perfil.Administrador)
+                {
+                    <a id="btn-excluir" class="btn btn-circle btn-danger btn-sm" title="Excluir" btn-sm" href="#" data-url="@Url.Action("Remover", new { id = item.ClienteId })" data-togle="tooltip">
+                        <i class="fa fa-close" aria-hidden="true"></i>
+                    </a>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

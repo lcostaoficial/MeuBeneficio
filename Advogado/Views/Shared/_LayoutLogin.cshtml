@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Sistema de autenticação</title>
+    <link rel="stylesheet" href="~/Assets/styles/style.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/waves/waves.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/sweet-alert/sweetalert.css">
+</head>
+
+<body>
+    <div id="single-wrapper">
+        @RenderBody()
+    </div>
+    <script src="~/Assets/scripts/jquery.min.js"></script>
+    <script src="~/Assets/scripts/modernizr.min.js"></script>
+    <script src="~/Assets/plugin/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/nprogress/nprogress.js"></script>
+    <script src="~/Assets/plugin/waves/waves.min.js"></script>
+    <script src="~/Assets/scripts/main.min.js"></script>
+    <script src="~/Assets/plugin/sweet-alert/sweetalert.min.js"></script>
+    <script src="~/Assets/plugin/jquery-mask/jquery.mask.js"></script>
+    <script src="~/Assets/scripts/globalmask.js"></script>
+    @Html.Partial("_Message")
+</body>
+</html>

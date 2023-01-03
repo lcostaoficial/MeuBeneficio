@@ -1,0 +1,36 @@
+﻿@model Advogado.Models.Funcionario
+
+@Html.AntiForgeryToken()
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.Nome)
+    @Html.TextBoxFor(m => m.Nome, new { @class = "form-control", placeholder = "Informe o nome completo" })
+    @Html.ValidationMessageFor(m => m.Nome)
+</div>
+
+@if (Model != null)
+{
+    <div class="form-group col-md-6">
+        @Html.LabelFor(m => m.Cpf)
+        @Html.TextBoxFor(m => m.Cpf, new { @class = "form-control cpf", placeholder = "Informe o CPF", @readonly="" })
+        @Html.ValidationMessageFor(m => m.Cpf)
+    </div>
+}
+else
+{
+    <div class="form-group col-md-6">
+        @Html.LabelFor(m => m.Cpf)
+        @Html.TextBoxFor(m => m.Cpf, new { @class = "form-control cpf", placeholder = "Informe o CPF" })
+        @Html.ValidationMessageFor(m => m.Cpf)
+    </div>
+}
+
+<div class="form-group col-md-6">
+    @Html.LabelFor(m => m.Perfil)
+    @Html.EnumDropDownListFor(m => m.Perfil, "Selecione...", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Perfil)
+</div>
+
+<div class="form-group col-md-12">
+    <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light">Salvar</button>
+</div>

@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "_Impressoes";
+}
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Documentos a serem impressos</h4>
+    <hr class="my-4">
+</div>
+
+<div class="col-md-12">
+    <table id="impressao" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Documento a ser impresso</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="active" id="impressao-procuracao" data-url="@Url.Action("ImprimirProcuracao", "Caso")">
+                <td>Procuração</td>
+                <td class="text-nowrap" width="10">
+                    <a class="btn btn-circle btn-info btn-sm" title="Imprimir documento" href="#" onclick="Impressao.imprimirProcuracao()">
+                        <i class="fa fa-print" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr class="active" id="impressao-contrato" data-url="@Url.Action("ImprimirContrato", "Caso")">
+                <td>Contrato</td>
+                <td class="text-nowrap" width="10">
+                    <a class="btn btn-circle btn-info btn-sm" title="Imprimir documento" href="#" onclick="Impressao.parametrosContrato()">
+                        <i class="fa fa-print" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr class="active" id="impressao-ficha-atendimento" data-url="@Url.Action("ImprimirFichaAtendimento", "Caso")">
+                <td>Ficha de atendimento</td>
+                <td class="text-nowrap" width="10">
+                    <a class="btn btn-circle btn-info btn-sm" title="Imprimir documento" href="#" onclick="Impressao.imprimirFichaAtendimento()">
+                        <i class="fa fa-print" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr class="active" id="impressao-declaracao-residencia" data-url="@Url.Action("ImprimirDeclaracaoResidencia", "Caso")">
+                <td>Declaração de residência</td>
+                <td class="text-nowrap" width="10">
+                    <a class="btn btn-circle btn-info btn-sm" title="Imprimir documento" href="#" onclick="Impressao.imprimirDeclaracaoResidencia()">
+                        <i class="fa fa-print" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

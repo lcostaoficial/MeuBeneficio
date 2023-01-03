@@ -1,0 +1,238 @@
+﻿@model Advogado.Models.Caso
+
+@Html.AntiForgeryToken()
+
+<input type="hidden" id="CasoId" name="CasoId" data-url="@Url.Action("AtualizarGruposFamiliares", "Caso", new { id = (Model != null ? Model.CasoId : 0) })" data-count="@Html.Action("QuantidadeGrupoFamiliar", new { casoId = (Model != null ? Model.CasoId : 0) })" value="@(Model != null ? Model.CasoId : 0)" />
+<input type="hidden" id="ClienteId" name="ClienteId" value="@(Model != null ? Model.ClienteId : 0)" />
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Beneficiário</h4>
+    <hr class="my-4">
+</div>
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.TipoBeneficioId) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.DropDownListFor(x => x.TipoBeneficioId, new SelectList(ViewBag.TiposBeneficios, "TipoBeneficioId", "Descricao"), "Selecione...", new { @class = "form-control selectpicker", data_live_search = "true", data_url = Url.Action("VerificarSeTipoDeBeneficioTemGrupoFamiliar", "Caso") })
+    @Html.ValidationMessageFor(m => m.TipoBeneficioId)
+</div>
+
+<div class="form-group col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="more-less glyphicon glyphicon-plus"></i>
+                    Referenciar representante legal (cliente menor de idade)
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                @Html.LabelFor(m => m.RepresentanteLegalId) <label style="color: blue" title="Este campo é opcional">*</label> <a class="pull-right" href="@Url.Action("Novo", "Cliente")" title="Um representante legal é um cliente comum que deve ser cadastrado para ser vinculado ao caso.">Novo Representante</a>
+                @Html.DropDownListFor(x => x.RepresentanteLegalId, new SelectList(ViewBag.RepresentantesLegais, "ClienteId", "Nome"), "Selecione...", new { @class = "form-control selectpicker", data_live_search = "true" })
+                @Html.ValidationMessageFor(m => m.RepresentanteLegalId)
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.Cliente != null && !string.IsNullOrEmpty(Model.Cliente.Cpf))
+{
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cliente.Cpf) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cliente.Cpf, new { @class = "form-control cpf", data_url = Url.Action("BuscarCpfExistente", "Caso"), @disabled = "" })
+        @Html.ValidationMessageFor(m => m.Cliente.Cpf)
+    </div>
+}
+else
+{
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cliente.Cpf) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cliente.Cpf, new { @class = "form-control cpf", data_url = Url.Action("BuscarCpfExistente", "Caso") })
+        @Html.ValidationMessageFor(m => m.Cliente.Cpf)
+    </div>
+}
+
+<div class="form-group col-md-5">
+    @Html.LabelFor(m => m.Cliente.Nome) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Nome, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Nome)
+</div>
+
+<div class="form-group col-md-5">
+    @Html.LabelFor(m => m.Cliente.NomeMae) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.NomeMae, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.NomeMae)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Profissao) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Profissao, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Profissao)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.EstadoCivil) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.EnumDropDownListFor(m => m.Cliente.EstadoCivil, "Selecione...", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.EstadoCivil)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Naturalidade) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Naturalidade, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Naturalidade)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.EstadoNascimento) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.EnumDropDownListFor(m => m.Cliente.EstadoNascimento, "Selecione...", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.EstadoNascimento)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Nacionalidade) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Nacionalidade, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Nacionalidade)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.DataNascimento) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.DataNascimento, new { @class = "form-control date" })
+    @Html.ValidationMessageFor(m => m.Cliente.DataNascimento)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.ClienteEstrangeiro) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.DropDownListFor(m => m.Cliente.ClienteEstrangeiro, new SelectList(
+    new[]
+    {
+        new { Value = "", Text = "Selecione..." },
+        new { Value = "true", Text = "Sim" },
+        new { Value = "false", Text = "Não" },
+    }, "Value", "Text"),
+    new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.ClienteEstrangeiro)
+</div>
+
+@if (Model != null && Model.Cliente != null && Model.Cliente.ClienteEstrangeiro)
+{
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Cliente.DocumentoIdentificacaoEstrangeiro) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cliente.DocumentoIdentificacaoEstrangeiro, new { @class = "form-control", placeholder = "Registro Nacional de Estrangeiros (RNE)" })
+        @Html.ValidationMessageFor(m => m.Cliente.DocumentoIdentificacaoEstrangeiro)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cliente.Rg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cliente.Rg, new { @class = "form-control", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.Cliente.Rg)
+    </div>
+
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Cliente.OrgaoExpedidorRg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.Cliente.OrgaoExpedidorRg, "Selecione...", new { @class = "form-control", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.Cliente.OrgaoExpedidorRg)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cliente.EstadoOrgaoExpedidor) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.Cliente.EstadoOrgaoExpedidor, "Selecione...", new { @class = "form-control", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.Cliente.EstadoOrgaoExpedidor)
+    </div>
+}
+else
+{
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Cliente.DocumentoIdentificacaoEstrangeiro) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cliente.DocumentoIdentificacaoEstrangeiro, new { @class = "form-control", placeholder = "Registro Nacional de Estrangeiros (RNE)", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.Cliente.DocumentoIdentificacaoEstrangeiro)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cliente.Rg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cliente.Rg, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Cliente.Rg)
+    </div>
+
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Cliente.OrgaoExpedidorRg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.Cliente.OrgaoExpedidorRg, "Selecione...", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Cliente.OrgaoExpedidorRg)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cliente.EstadoOrgaoExpedidor) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.Cliente.EstadoOrgaoExpedidor, "Selecione...", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Cliente.EstadoOrgaoExpedidor)
+    </div>
+}
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Contatos</h4>
+    <hr class="my-4">
+</div>
+
+<div class="form-group col-md-3">
+    @Html.LabelFor(m => m.Cliente.TelefoneMovel) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.TelefoneMovel, new { @class = "form-control telefonemovel" })
+    @Html.ValidationMessageFor(m => m.Cliente.TelefoneMovel)
+</div>
+
+<div class="form-group col-md-3">
+    @Html.LabelFor(m => m.Cliente.TelefoneFixo)
+    @Html.TextBoxFor(m => m.Cliente.TelefoneFixo, new { @class = "form-control telefonefixo" })
+    @Html.ValidationMessageFor(m => m.Cliente.TelefoneFixo)
+</div>
+
+<div class="form-group col-md-6">
+    @Html.LabelFor(m => m.Cliente.Email) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Email, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Email)
+</div>
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Endereço</h4>
+    <hr class="my-4">
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Cep) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Cep, new { @class = "form-control cep" })
+    @Html.ValidationMessageFor(m => m.Cliente.Cep)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Rua) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Rua, new { @class = "form-control", placeholder = "Exemplo: Rua das Flores ou Av. Jorge Teixeira." })
+    @Html.ValidationMessageFor(m => m.Cliente.Rua)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Numero) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Numero, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Numero)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Bairro) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Bairro, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Bairro)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Cidade) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cliente.Cidade, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Cidade)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cliente.Estado) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.EnumDropDownListFor(m => m.Cliente.Estado, "Selecione...", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cliente.Estado)
+</div>
+
+<div id="gruposfamiliares" data-url="@(Url.Action("GruposFamiliares", "Caso"))"></div>
+
+<div class="form-group col-md-12">
+    <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light" onclick="javascript:void(0)">Salvar</button>
+</div>

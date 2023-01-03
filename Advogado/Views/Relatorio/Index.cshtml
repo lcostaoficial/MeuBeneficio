@@ -1,0 +1,224 @@
+﻿@{
+    ViewBag.Title = "Relatórios Gerais";
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+}
+
+@section scripts
+{
+    <script src="~/Assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+    <script src="~/Assets/scripts/datatables.demo.js"></script>
+
+    <script src="~/Assets/plugin/pdfmake/pdfmake.js"></script>
+    <script src="~/Assets/plugin/pdfmake/vfs_fonts.js"></script>
+
+    <script>
+        $(function () {
+
+            "use strict";
+
+            window.Relatorio = window.Relatorio || {};
+
+            Relatorio.imprimirRelatorioCasosAtrasados = function () {
+                var url = $("#impressao-processos-atrasados").data("url");
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function success(result) {
+                        if (result.Success) {
+                            Relatorio.gerarRelatorioCasosAtrasados(result.Model);
+                        }
+                        if (result.Error) {
+                            swal("Mensagem", result.Error, "warning");
+                        }
+                    },
+                    error: function error(XMLHttpRequest, textStatus, errorThrown) {
+                        swal("Mensagem", errorThrown, "error");
+                    }
+                });
+            };
+
+            Relatorio.gerarRelatorioCasosAtrasados = function (model) {
+
+                console.log(model);
+
+                var rows = [];
+
+                /* Cabeçalho da tabela */
+                rows.push(
+                    [
+                        { text: 'Protocolo', bold: true },
+                        { text: 'Cliente', bold: true },
+                        { text: 'Tarefas Atrasadas', bold: true },
+                    ]
+                );
+
+                /* Carregamento do conteúdo da tabela */
+                $.each(model, function (i, item) {
+                    rows.push(
+                        [
+                            { text: item.Protocolo },
+                            { text: item.Cliente.Nome },
+                            { text: item.TotalTarefasAtrasadas }                            
+                        ]
+                    )
+                });
+
+                var dd = {
+                    content: [
+                        {
+                            text: '\RELATÓRIO DE CASOS ATRASADOS\n\n',
+                            style: 'header',
+                            decoration: 'underline',
+                            alignment: 'center'
+                        },
+
+
+                        {
+                            table: {
+                                widths: ['25%', '50%', '25%'],
+                                body: rows
+                            },
+                            layout: {
+                                hLineWidth: function (i, node) {
+                                    return (i === 0 || i === node.table.body.length) ? 1 : 1;
+                                },
+                                vLineWidth: function (i, node) {
+                                    return (i === 0 || i === node.table.widths.length) ? 1 : 1;
+                                },
+                                //hLineColor: function (i, node) {
+                                //    return (i === 0 || i === node.table.body.length) ? '#BD4E19' : '#BD4E19';
+                                //},
+                                //vLineColor: function (i, node) {
+                                //    return (i === 0 || i === node.table.widths.length) ? '#BD4E19' : '#BD4E19';
+                                //}
+                            }
+                        }
+
+                        //{
+                        //    text: [
+                        //        { text: 'OUTORGANTE: ' + model.Cliente.Nome.toUpperCase(), bold: true },
+                        //        ', ' + model.Cliente.Nacionalidade.toLowerCase() + ', ',
+                        //        model.Cliente.EstadoCivilFormatado + ', ' + model.Cliente.PortadorDocumento + ', inscrito no CPF: ' + model.Cliente.Cpf + ', residente ',
+                        //        'e domiciliado na rua ' + model.Cliente.Rua + ', nº ' + model.Cliente.Numero + ' - ',
+                        //        model.Cliente.Bairro + '. ' + model.Cliente.Cidade + ' - ' + model.Cliente.EstadoFormatado + '. ',
+                        //        'Telefone: ' + model.Cliente.TelefoneMovel + ', E-mail: ' + model.Cliente.Email + '. \n\n'
+                        //    ], alignment: 'justify'
+                        //},
+                        //{
+                        //    text: [
+                        //        { text: 'OUTORGADO: ÉLBER VIEIRA MUDREY', bold: true },
+                        //        ', brasileiro, casado, portador do RG 1017793-0 SSP/AC,  ',
+                        //        'inscrito no CPF 000.116.102-47 e ',
+                        //        { text: 'KEVELY SILVA SENA', bold: true },
+                        //        ', brasileira, solteira, portadora do RG, ',
+                        //        '1116933 SSP/RO, CPF 011.295.762-56, com endereço profissional na Av. Governador Jorge ',
+                        //        'Teixeira, nº 3137 - Liberdade. Porto Velho - RO. CEP: 76803-895, Tel: (69) 99262-2900. ',
+                        //        'E-mail: elbervm@gmail.com. \n\n'
+                        //    ], alignment: 'justify'
+                        //},
+                        //{
+                        //    text: [
+                        //        { text: 'PODERES: ', bold: true },
+                        //        'O outorgante confere ao outorgado poderes para representá-lo junto ao ',
+                        //        { text: 'PODER JUDICIÁRIO ESTADUAL E FEDERAL, ', bold: true },
+                        //        'visando a concessão de benefício previdenciário, podendo ',
+                        //        'propor ação, receber citação, intimação, confessar, reconhecer, transigir, desistir, renunciar ao ',
+                        //        'direito sobre que se funda a ação, renunciar a valores que superem o teto dos juizados especiais, ',
+                        //        'receber e dar quitação, efetuar levantamento de qualquer quantia depositada, inclusive proceder ',
+                        //        'o levantamento de alvará judicial, firmar compromisso e prestar declarações de endereço. ',
+                        //        { text: 'INSTITUTO NACIONAL DO SEGURO SOCIAL - INSS, ', bold: true },
+                        //        'podendo requerer: benefício, resíduos de ',
+                        //        'pagamento, certidões, extratos, informações, cópias de processo, laudos médicos, senhas de ',
+                        //        'acesso a informações, atualização de dados, guias de pagamento, pagamento de diárias e ',
+                        //        'transportes ao outorgante/dependente, cumprir exigências, prestar declarações, ratificar ',
+                        //        'informações, agendar ou remarcar serviços e benefícios, realizar recursos, bem como todo e ',
+                        //        'qualquer serviço oferecido pelo INSS, mesmo que não especificado acima. ',
+                        //        { text: 'MINISTÉRIO DO TRABALHO E EMPREGO – MTE, ', bold: true },
+                        //        'podendo solicitar extrato de vínculos, relatório CAGED e Rais, bem ',
+                        //        'como todo e qualquer serviço oferecido pelo MTE, mesmo que não especificado acima. ',
+                        //        { text: 'CAIXA ECONÔMICA FEDERAL – CEF, ', bold: true },
+                        //        'podendo solicitar extrato de FGTS. ',
+                        //        { text: 'CORREIOS, ', bold: true },
+                        //        'podendo solicitar ',
+                        //        'inscrição/atualização de CPF. ',
+                        //        { text: 'RECEITA FEDERAL, ', bold: true },
+                        //        ' podendo solicitar inscrição/atualização de CPF. ',
+                        //        { text: 'TRIBUNAL REGIONAL ELEITORAL - TRE, ', bold: true },
+                        //        'podendo solicitar declaração circunstanciada, ',
+                        //        'informações adicionais e/ou qualquer tipo de documento em nome do outorgante. ',
+                        //        { text: 'EMPRESAS PRIVADAS, ', bold: true },
+                        //        'podendo solicitar, ficha cadastral, segunda via de notas fiscais, original ou cópia ',
+                        //        'autenticada da Ficha de Registro de Empregados ou do Livro de Registro de Empregados, ',
+                        //        'declaração de vínculo, contrato individual de trabalho, termo de rescisão contratual, recibos de ',
+                        //        'pagamento, cartão, livro ou folha de ponto, ficha financeira. ',
+                        //        { text: 'ESTABELECIMENTO DE SAÚDE, ', bold: true },
+                        //        'Podendo solicitar ficha cadastral, prontuário médico, relatórios ou informações. ',
+                        //        { text: 'ESTABELECIMENTOS DE ENSINO, ', bold: true },
+                        //        'podendo solicitar boletins escolares, declaração referente ao ',
+                        //        'outorgante ou seus dependentes menores de idade. ',
+                        //        { text: 'ESTABELECIMENTOS RELIGIOSOS, ', bold: true },
+                        //        'podendo solicitar comprovantes de batismo do outorgante ou dos dependentes menores de idade. ',
+                        //        'Podendo, assim, praticar todos os atos necessários ao fiel desempenho do presente mandato e ',
+                        //        'ainda substabelecer no todo, ou em parte, os poderes que ora lhes são outorgados, dando tudo ',
+                        //        'por bom, firme e valioso. \n\n',
+                        //        'Porto Velho – RO, ' + model.DataEmissao + '.\n\n\n'
+                        //    ], alignment: 'justify'
+                        //},
+                        //{
+                        //    text: [
+                        //        '_______________________________________________________ \n\n',
+                        //        model.Cliente.Nome + ' \n\n',
+                        //        model.Cliente.Cpf
+                        //    ],
+                        //    alignment: 'center'
+                        //}
+                    ],
+                    styles: {
+                        header: {
+                            fontSize: 14,
+                            bold: true
+                        }
+                    },
+                    defaultStyle: {
+                        fontSize: 11
+                    }
+                };
+
+                pdfMake.createPdf(dd).open();
+            };
+
+        });
+    </script>
+}
+
+<div class="col-xs-12">
+    <div class="box-content">
+        <h4 class="box-title">@ViewBag.Title</h4>
+        <table id="impressao" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Documento a ser impresso</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="active" id="impressao-processos-atrasados" data-url="@Url.Action("RelatorioDeCasosAtrasados", "Tarefa")">
+                    <td>Processos atrasados</td>
+                    <td class="text-nowrap" width="10">
+                        <a class="btn btn-circle btn-info btn-sm" title="Imprimir documento" href="#" onclick="Relatorio.imprimirRelatorioCasosAtrasados()">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

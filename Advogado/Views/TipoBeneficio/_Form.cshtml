@@ -1,0 +1,41 @@
+﻿@model Advogado.Models.TipoBeneficio
+
+@Html.AntiForgeryToken()
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.Descricao)
+    @Html.TextBoxFor(m => m.Descricao, new { @class = "form-control", placeholder = "Informe a descrição" })
+    @Html.ValidationMessageFor(m => m.Descricao)
+</div>
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.Remuneracao)
+    @Html.TextBoxFor(m => m.Remuneracao, new { @class = "form-control", placeholder = "Informe a remuneração para este tipo de benefício" })
+    @Html.ValidationMessageFor(m => m.Remuneracao)
+</div>
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.TiposArquivosIds)
+    @Html.ListBoxFor(x => x.TiposArquivosIds, new MultiSelectList(ViewBag.TiposArquivos, "TipoArquivoId", "Descricao"), new { @class = "form-control selectpicker", data_live_search = "true", title = "Selecione os tipos de arquivos...", data_size = "5" })
+    @Html.ValidationMessageFor(m => m.TiposArquivosIds)
+</div>
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.PerguntasIds)
+    @Html.ListBoxFor(x => x.PerguntasIds, new MultiSelectList(ViewBag.Perguntas, "PerguntaId", "Enunciado"), new { @class = "form-control selectpicker", data_live_search = "true", title = "Selecione as perguntas...", data_size = "5" })
+    @Html.ValidationMessageFor(m => m.PerguntasIds)
+</div>
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.HabilitarGrupoFamiliar)
+    @Html.DropDownListFor(model => model.HabilitarGrupoFamiliar, new List<SelectListItem>()
+    {
+        new SelectListItem() { Text = "Sim", Value = "True" },
+        new SelectListItem() { Text = "Não", Value = "False"}
+    }, "Selecione...", new { @class = "form-control", @id = "Obrigatoria" })
+    @Html.ValidationMessageFor(model => model.HabilitarGrupoFamiliar)
+</div>
+
+<div class="form-group col-md-12">
+    <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light">Salvar</button>
+</div>

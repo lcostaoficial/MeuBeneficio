@@ -1,0 +1,49 @@
+﻿@model Advogado.Models.TipoArquivo
+
+@Html.AntiForgeryToken()
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.Descricao)
+    @Html.TextBoxFor(m => m.Descricao, new { @class = "form-control", placeholder = "Informe a descrição" })
+    @Html.ValidationMessageFor(m => m.Descricao)
+</div>
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.Observacao)
+    @Html.TextBoxFor(m => m.Observacao, new { @class = "form-control", placeholder = "Informe a observação" })
+    @Html.ValidationMessageFor(m => m.Observacao)
+</div>
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.Obrigatorio)
+    @Html.DropDownListFor(model => model.Obrigatorio, new List<SelectListItem>()
+    {
+        new SelectListItem() { Text = "Sim", Value = "True" },
+        new SelectListItem() { Text = "Não", Value = "False"}
+    }, "Selecione...", new { @class = "form-control", @id = "Obrigatorio" })
+    @Html.ValidationMessageFor(model => model.Obrigatorio)
+</div>
+
+<div class="form-group col-md-12" id="div-modelo-arquivo">
+    @if (Model != null && !string.IsNullOrEmpty(Model.Modelo))
+    {
+        @Html.LabelFor(m => m.Modelo)
+        <li class="list-group-item">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Clique para ver as opções</a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="@Url.Content(Model.Modelo)" target="_blank">Baixar arquivo de modelo</a></li>
+                <li><a href="#" onclick="RemoverArquivo()">Remover arquivo de modelo</a></li>
+            </ul>
+        </li>
+        <input type="hidden" id="MantemMesmoModelo" name="MantemMesmoModelo" value="True" />
+    }
+    else
+    {
+        @Html.Partial("_ModeloArquivo")
+    }
+</div>
+
+<div class="form-group col-md-12">
+    <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light">Confirmar</button>
+    <a href="@Url.Action("Index")" class="btn btn-warning btn-sm waves-effect waves-light">Cancelar</a>
+</div>

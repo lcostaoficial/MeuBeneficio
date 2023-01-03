@@ -1,0 +1,63 @@
+﻿@using Advogado.Models;
+@model Tarefa
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Exibir Tarefa - <a href="@Url.Action("Editar", "Caso", new { id = Model.CasoId })">Ir para caso de origem desta tarefa</a></h4>
+        </div>
+        <div class="modal-body">
+            <h4 class="box-title" style="text-align: justify">Título: @Model.Titulo</h4>
+            @if (Model.FuncionarioResponsavel != null)
+            {
+                <h4 class="box-title" style="text-align: justify">Responsável: @Model.FuncionarioResponsavel.Nome</h4>
+            }
+            <blockquote>
+                <p style="text-align: justify"> <b>Objetivo:</b> @Model.Descricao</p>
+                @if (Model.Finalizada)
+                {
+                    <p style="text-align: justify"> <b>Solução:</b> @Model.Solucao</p>
+                    <footer>Tarefa criada pelo funcionário(a) @(Model.FuncionarioCriador != null ? Model.FuncionarioCriador.Nome : "Sistema") e finalizada pelo funcionário(a) @Model.FuncionarioResponsavel.Nome na data @Model.DataFinalizacao.Value.ToShortDateString()  – Data de criação: @Model.DataCriacao.ToShortDateString()</footer>
+                }
+                else
+                {
+                    <footer>Tarefa criada por: @(Model.FuncionarioCriador != null ? Model.FuncionarioCriador.Nome : "Sistema") – Data de criação: @Model.DataCriacao.ToShortDateString()</footer>
+                }
+            </blockquote>
+        </div>
+        <div class="modal-footer">
+            @if (Model.Finalizada == false)
+            {
+                if (Model.FuncionarioResponsavelId == null)
+                {
+                    <button type="button" class="btn btn-default btn-sm waves-effect waves-light" onclick="Tarefas.assumirTarefa(@Model.TarefaId, '@Url.Action("AssumirTarefa", "Tarefa")')">Assumir tarefa</button>
+                }
+                else
+                {
+                    if (Funcionario.FuncionarioLogado().FuncionarioId == Model.FuncionarioResponsavelId && Model.TipoTarefa == TipoTarefa.Comum)
+                    {
+                        <button type="button" class="btn btn-default btn-sm waves-effect waves-light" onclick="Caso.finalizarTarefa(@Model.TarefaId)">Finalizar tarefa</button>
+                    }
+                }
+
+                if (Model.FuncionarioResponsavelId != null)
+                {
+                    <button type="button" class="btn btn-default btn-sm waves-effect waves-light" onclick="Caso.alterarResponsavel(@Model.TarefaId)">Alterar responsável</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-default btn-sm waves-effect waves-light" onclick="Caso.alterarResponsavel(@Model.TarefaId)">Atribuir responsável</button>
+                }
+
+                <button type="button" class="btn btn-default btn-sm waves-effect waves-light" onclick="Caso.alterarPrazo(@Model.TarefaId)">Dilatar prazo</button>
+
+                if (Funcionario.FuncionarioLogado().Perfil == Perfil.Administrador)
+                {
+                    <button type="button" class="btn btn-default btn-sm waves-effect waves-light" onclick="Tarefas.excluirTarefa(@Model.TarefaId, '@Url.Action("ExcluirTarefa", "Tarefa")')">Excluir tarefa</button>
+                }
+            }
+            <button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>

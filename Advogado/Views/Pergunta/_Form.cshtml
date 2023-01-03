@@ -1,0 +1,35 @@
+﻿@model Advogado.Models.Pergunta
+
+@Html.AntiForgeryToken()
+
+<div class="form-group col-md-12">
+    @Html.LabelFor(m => m.Enunciado)
+    @Html.TextAreaFor(m => m.Enunciado, new { @class = "form-control", placeholder = "Informe o enunciado" })
+    @Html.ValidationMessageFor(m => m.Enunciado)
+</div>
+
+<div class="form-group col-md-6">
+    @Html.LabelFor(m => m.Obrigatoria)
+    @Html.DropDownListFor(model => model.Obrigatoria, new List<SelectListItem>()
+    {
+        new SelectListItem() { Text = "Sim", Value = "True" },
+        new SelectListItem() { Text = "Não", Value = "False"}
+    }, "Selecione...", new { @class = "form-control", @id = "Obrigatoria" })
+    @Html.ValidationMessageFor(model => model.Obrigatoria)
+</div>
+
+<div class="form-group col-md-6">
+    @Html.LabelFor(m => m.MultiplaAlternativa)
+    @Html.DropDownListFor(model => model.MultiplaAlternativa, new List<SelectListItem>()
+    {
+        new SelectListItem() { Text = "Sim, a pergunta deve possuir várias alternativas", Value = "True" },
+        new SelectListItem() { Text = "Não, a pergunta vai ser respondida diretamente com um texto livre", Value = "False"}
+    }, "Selecione...", new { @class = "form-control", @id = "MultiplaAlternativa" })
+    @Html.ValidationMessageFor(model => model.MultiplaAlternativa)
+</div>
+
+<div id="alternativas" data-url="@(Url.Action("Alternativas", "Pergunta"))"></div>
+
+<div class="form-group col-md-12">
+    <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light">Salvar</button>
+</div>

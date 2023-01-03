@@ -1,0 +1,207 @@
+﻿@model Advogado.Models.Cliente
+
+@Html.AntiForgeryToken()
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Beneficiário</h4>
+    <hr class="my-4">
+</div>
+
+@if (!string.IsNullOrEmpty(Model?.Cpf) && Model?.ClienteId != 0)
+{
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cpf) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cpf, new { @class = "form-control", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.Cpf)
+    </div>
+}
+else
+{
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Cpf) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Cpf, new { @class = "form-control cpf" })
+        @Html.ValidationMessageFor(m => m.Cpf)
+    </div>
+}
+
+<div class="form-group col-md-5">
+    @Html.LabelFor(m => m.Nome) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Nome)
+</div>
+
+<div class="form-group col-md-5">
+    @Html.LabelFor(m => m.NomeMae) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.NomeMae, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.NomeMae)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Profissao) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Profissao, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Profissao)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.EstadoCivil) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.EnumDropDownListFor(m => m.EstadoCivil, "Selecione...", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.EstadoCivil)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Naturalidade) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Naturalidade, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Naturalidade)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.EstadoNascimento) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.EnumDropDownListFor(m => m.EstadoNascimento, "Selecione...", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.EstadoNascimento)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Nacionalidade) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Nacionalidade, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Nacionalidade)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.DataNascimento) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control date" })
+    @Html.ValidationMessageFor(m => m.DataNascimento)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.ClienteEstrangeiro) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.DropDownListFor(m => m.ClienteEstrangeiro, new SelectList(
+    new[]
+    {
+        new { Value = "", Text = "Selecione..." },
+        new { Value = "true", Text = "Sim" },
+        new { Value = "false", Text = "Não" },
+    }, "Value", "Text"),
+    new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.ClienteEstrangeiro)
+</div>
+
+@if (Model != null && Model.ClienteEstrangeiro)
+{
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.DocumentoIdentificacaoEstrangeiro) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.DocumentoIdentificacaoEstrangeiro, new { @class = "form-control", placeholder = "Registro Nacional de Estrangeiros (RNE)" })
+        @Html.ValidationMessageFor(m => m.DocumentoIdentificacaoEstrangeiro)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Rg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Rg, new { @class = "form-control", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.Rg)
+    </div>
+
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.OrgaoExpedidorRg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.OrgaoExpedidorRg, "Selecione...", new { @class = "form-control", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.OrgaoExpedidorRg)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.EstadoOrgaoExpedidor) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.EstadoOrgaoExpedidor, "Selecione...", new { @class = "form-control", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.EstadoOrgaoExpedidor)
+    </div>
+}
+else
+{
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.DocumentoIdentificacaoEstrangeiro) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.DocumentoIdentificacaoEstrangeiro, new { @class = "form-control", placeholder = "Registro Nacional de Estrangeiros (RNE)", @disabled = "" })
+        @Html.ValidationMessageFor(m => m.DocumentoIdentificacaoEstrangeiro)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.Rg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.TextBoxFor(m => m.Rg, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Rg)
+    </div>
+
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.OrgaoExpedidorRg) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.OrgaoExpedidorRg, "Selecione...", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.OrgaoExpedidorRg)
+    </div>
+
+    <div class="form-group col-md-2">
+        @Html.LabelFor(m => m.EstadoOrgaoExpedidor) <label style="color: red" title="Este campo é obrigatório">*</label>
+        @Html.EnumDropDownListFor(m => m.EstadoOrgaoExpedidor, "Selecione...", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.EstadoOrgaoExpedidor)
+    </div>
+}
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Contatos</h4>
+    <hr class="my-4">
+</div>
+
+<div class="form-group col-md-3">
+    @Html.LabelFor(m => m.TelefoneMovel) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.TelefoneMovel, new { @class = "form-control telefonemovel" })
+    @Html.ValidationMessageFor(m => m.TelefoneMovel)
+</div>
+
+<div class="form-group col-md-3">
+    @Html.LabelFor(m => m.TelefoneFixo)
+    @Html.TextBoxFor(m => m.TelefoneFixo, new { @class = "form-control telefonefixo" })
+    @Html.ValidationMessageFor(m => m.TelefoneFixo)
+</div>
+
+<div class="form-group col-md-6">
+    @Html.LabelFor(m => m.Email) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Email)
+</div>
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Endereço</h4>
+    <hr class="my-4">
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cep) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cep, new { @class = "form-control cep" })
+    @Html.ValidationMessageFor(m => m.Cep)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Rua) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Rua, new { @class = "form-control", placeholder = "Exemplo: Rua das Flores ou Av. Jorge Teixeira." })
+    @Html.ValidationMessageFor(m => m.Rua)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Numero) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Numero, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Numero)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Bairro) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Bairro, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Bairro)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Cidade) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.TextBoxFor(m => m.Cidade, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cidade)
+</div>
+
+<div class="form-group col-md-2">
+    @Html.LabelFor(m => m.Estado) <label style="color: red" title="Este campo é obrigatório">*</label>
+    @Html.EnumDropDownListFor(m => m.Estado, "Selecione...", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Estado)
+</div>
+
+<div class="form-group col-md-12">
+    <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light">Salvar</button>
+</div>

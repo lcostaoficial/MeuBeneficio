@@ -1,0 +1,18 @@
+﻿<div class="col-md-3">
+    <a href="#" data-toggle="modal" data-target="#add-category" class="btn btn-lg btn-success btn-block waves-effect waves-light" onclick="Caso.novaTarefa()">
+        <i class="fa fa-plus"></i> Nova Tarefa
+    </a>
+    <div id="external-events" class="margin-top-30">
+        <p>Classificação das cores das tarefas</p>
+        <div style="cursor: default; margin: 5px 7px 5px 0px" class="fc-event bg-success ">Tarefa finalizada</div>
+        <div style="cursor: default; margin: 5px 7px 5px 0px" class="fc-event bg-danger">Tarefa atrasada</div>
+        <div style="cursor: default; margin: 5px 7px 5px 0px" class="fc-event bg-primary">Tarefa ainda em dias</div>
+        <div style="cursor: default; margin: 5px 7px 5px 0px" class="fc-event bg-warning">Tarefa vencendo hoje</div>
+    </div>
+</div>
+
+<div class="col-md-9">
+    <div class="box-content">
+        <div id="calendar" data-url="@Url.Action("Index", "Tarefa")"></div>
+    </div>
+</div>

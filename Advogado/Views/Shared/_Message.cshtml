@@ -1,0 +1,15 @@
+﻿@using Advogado.Helpers
+@{
+    var alerts = TempData.ContainsKey("Message") ? (List<Alert>)TempData["Message"] : new List<Alert>();
+    if (alerts.Any())
+    {
+        <script>
+            @{
+               foreach (var item in alerts)
+               {
+                   @Html.Raw("swal('Mensagem','" + item.Message + "', '" + item.AlertStyle + "');")
+               }
+           }
+        </script>
+    }
+}

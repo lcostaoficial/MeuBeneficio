@@ -1,0 +1,21 @@
+﻿@model Advogado.Models.Pergunta
+
+<div class="form-group col-md-6">
+    @Html.LabelFor(m => m.MultiplaResposta)
+    @Html.DropDownListFor(model => model.MultiplaResposta, new List<SelectListItem>()
+    {
+        new SelectListItem() { Text = "Sim", Value = "True" },
+        new SelectListItem() { Text = "Não", Value = "False"}
+    }, "Selecione...", new { @class = "form-control", @id = "Obrigatoria" })
+    @Html.ValidationMessageFor(model => model.MultiplaResposta)
+</div>
+
+<div class="form-group col-md-6">
+    @Html.LabelFor(m => m.CaixaSelecao)
+    @Html.DropDownListFor(model => model.CaixaSelecao, new List<SelectListItem>()
+    {
+        new SelectListItem() { Text = "Sim", Value = "True" },
+        new SelectListItem() { Text = "Não", Value = "False"}
+    }, "Selecione...", new { @class = "form-control", @id = "Obrigatoria" })
+    @Html.ValidationMessageFor(model => model.CaixaSelecao)
+</div>

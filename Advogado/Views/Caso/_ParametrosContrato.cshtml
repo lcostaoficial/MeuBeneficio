@@ -1,0 +1,25 @@
+﻿<div class="modal fade" id="modalParametrosContrato" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url-remuneracao="@Url.Action("BuscarRemuneracaoDoTipoDeBeneficio", "Caso")">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Parâmetros do contrato</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="form-group col-md-12">
+                        <label for="Remuneracao">Remuneração</label>
+                        <input type="text" class="form-control" id="Remuneracao" name="Remuneracao" placeholder="Informe a remuneração para este contrato"  value="" required="" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" onclick="Impressao.imprimirContrato()">Imprimir</button>
+                <button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

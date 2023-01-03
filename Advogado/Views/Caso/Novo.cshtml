@@ -1,0 +1,108 @@
+﻿@model Advogado.Models.Caso
+@{
+    ViewBag.Title = "Novo Caso";
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/Assets/plugin/bootstrap-select/css/bootstrap-select.css" />
+    <style>
+        .box-content.card .dropdown {
+            top: 0px !important;
+        }
+    </style>
+
+    <!-- FullCalendar -->
+    <link rel="stylesheet" href="~/Assets/plugin/fullcalendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/fullcalendar/fullcalendar.print.css" media='print'>
+}
+
+@section scripts
+{
+    <script src="~/Assets/plugin/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Assets/plugin/bootstrap-select/js/i18n/defaults-pt_BR.js"></script>
+    <script src="~/Assets/plugin/pdfmake/pdfmake.js"></script>
+    <script src="~/Assets/plugin/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Assets/scripts/caso.js"></script>
+    <script src="~/Assets/scripts/impressao.js"></script>
+    <script src="~/Assets/scripts/estrangeiro.js"></script>
+
+    <!-- Jquery UI -->
+    <script src="~/Assets/plugin/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Assets/plugin/jquery-ui/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- FullCalendar -->
+    <script src="~/Assets/plugin/moment/moment.js"></script>
+    <script src="~/Assets/plugin/fullcalendar/fullcalendar.min.js"></script>
+    <script src="~/Assets/plugin/fullcalendar/locale/pt-br.js"></script>
+
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="~/Assets/plugin/datepicker/css/bootstrap-datepicker.min.css">
+
+    <!-- Datepicker -->
+    <script src="~/Assets/plugin/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Assets/plugin/datepicker/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+
+    <script src="~/Assets/scripts/tarefas.js"></script>
+}
+
+@section modal
+{
+    @Html.Partial("_NovoAcompanhamento")
+    @Html.Partial("_NovaTarefa")
+    @Html.Partial("_FinalizarTarefa")
+    @Html.Partial("_AlterarResponsavel")
+    @Html.Partial("_AlterarPrazo")
+    @Html.Partial("_AnexarDocumento")
+    @Html.Partial("_ParametrosContrato")
+    <div data-url="@Url.Action("DetalhesTarefa", "Tarefa")" class="modal fade" id="modalDetalhesTarefa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+}
+
+<div class="col-md-12 col-xs-12">
+    <div class="box-content">
+        <h4 class="box-title">@ViewBag.Title</h4>
+        <ul class="nav nav-tabs">
+            <li id="menu-dadospessoais" class="active" data-caso-id="0"><a data-toggle="tab" href="#dadospessoais">Dados Pessoais</a></li>
+            <li id="menu-questionario" class="disabled"><a data-toggle="tab" href="#questionario">Questionário</a></li>
+            <li id="menu-documentos" class="disabled"><a data-toggle="tab" href="#documentos">Documentos Exigidos</a></li>
+            <li id="menu-impressao" class="disabled"><a data-toggle="tab" href="#impressao">Impressões</a></li>
+            <li id="menu-acompanhamento" class="disabled"><a data-toggle="tab" href="#acompanhamento">Acompanhamento</a></li>
+            <li id="menu-tarefas" class="disabled"><a data-toggle="tab" href="#tarefas">Tarefas</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="dadospessoais" class="tab-pane fade in active" data-url="@Url.Action("DadosPessoais", "Caso")">
+                <div class="row">
+                    @using (Html.BeginForm("SalvarCasoComDadosPessoais", "Caso", FormMethod.Post, new { @class = "form", id = "frmSalvarCasoComDadosPessoais" }))
+                    {
+                        <div id="frm-conteudo-dadospessoais"></div>
+                    }
+                </div>
+            </div>
+            <div id="questionario" class="tab-pane fade disabled" data-url="@Url.Action("Questionario", "Caso")">
+                @using (Html.BeginForm("SalvarCasoComQuestionario", "Caso", FormMethod.Post, new { @class = "form", id = "frmSalvarCasoComQuestionario" }))
+                {
+                    <div id="frm-conteudo-questionario" class="row"></div>
+                }
+            </div>
+            <div id="documentos" class="tab-pane fade disabled" data-url="@Url.Action("Documentos", "Caso")">
+                @using (Html.BeginForm("SalvarCasoComDocumento", "Caso", FormMethod.Post, new { @class = "form", id = "frmSalvarCasoComDocumento" }))
+                {
+                    <div id="frm-conteudo-documento" class="row"></div>
+                }
+            </div>
+            <div id="impressao" class="tab-pane fade disabled">
+                <div id="frm-conteudo-impressao" class="row">
+                    @Html.Partial("_Impressao")
+                </div>
+            </div>
+            <div id="acompanhamento" class="tab-pane fade disabled" data-url="@Url.Action("Movimentos", "Caso")">
+                <div id="frm-conteudo-acompanhamento" class="row"></div>
+            </div>
+            <div id="tarefas" class="tab-pane fade disabled" data-url="@Url.Action("Tarefas", "Caso")">
+                <div id="frm-conteudo-tarefas" class="row">
+                    @Html.Partial("_Tarefas")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Advogado.Models.TipoArquivo>
+@{
+    int arquivoId = 0;
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="form-group col-md-12" style="margin-bottom: 0px">
+        <h4>Documentos exigidos do benefício</h4>
+        <hr class="my-4">
+    </div>
+
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tipo de documento exigido</th>
+                    <th>Observação</th>
+                    <th>Modelo</th>
+                    <th>Obrigatório</th>
+                    <th>Documento anexado</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tipoArquivo in Model)
+                {
+                    <tr class="active">
+                        <td>@tipoArquivo.Descricao</td>
+                        <td>@tipoArquivo.Observacao</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(tipoArquivo.Modelo))
+                            {
+                                <a target="_blank" href="@Url.Content(tipoArquivo.Modelo)">Baixar modelo</a>
+                            }
+                            else
+                            {
+                                @Html.Raw("Nenhum modelo")
+                            }
+                        </td>
+
+                        <td>
+                            @(tipoArquivo.Obrigatorio ? "Sim" : "Não")
+                        </td>
+
+                        <td>
+                            @if (tipoArquivo.Arquivos != null && tipoArquivo.Arquivos.Any())
+                            {
+                                arquivoId = tipoArquivo.Arquivos.First().ArquivoId;
+                                <a target="#" href="@Url.Content(tipoArquivo.Arquivos.First().Caminho)">@tipoArquivo.Arquivos.First().Nome</a>
+                            }
+                            else
+                            {
+                                arquivoId = 0;
+                                @Html.Raw("Nenhum documento anexado");
+                            }
+                        </td>
+                        <td class="text-nowrap" width="10">
+                            <a class="btn btn-circle btn-info btn-sm" title="Anexar documento" href="#" onclick="Caso.anexarArquivo(@tipoArquivo.TipoArquivoId, @arquivoId)">
+                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="col-md-12">
+        <p>Não há documentos exigidos para o tipo de benefício escolhido.</p>
+    </div>
+}

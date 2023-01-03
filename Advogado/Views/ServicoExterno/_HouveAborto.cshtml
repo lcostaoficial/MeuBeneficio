@@ -1,0 +1,24 @@
+﻿@model Advogado.Models.QuestionarioSalarioMaternidade
+
+<div class="form-group">
+    <label style="text-align: justify">Você sofreu aborto ou sua criança veio a falecer após o parto?</label>
+    <label class="container_radio version_2">
+        Sim
+        @Html.RadioButton("HouveAborto", true, false, new { required = "" })
+        <span class="checkmark"></span>
+    </label>
+    <label class="container_radio version_2">
+        Não
+        @Html.RadioButton("HouveAborto", false, false, new { required = "" })
+        <span class="checkmark"></span>
+    </label>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <input type="submit" value="Confirmar" class="btn_1 add_bottom_15">
+    </div>
+</div>
+
+<input type="hidden" id="PassoSalarioMaternidade" name="PassoSalarioMaternidade" value="@Advogado.Models.PassoSalarioMaternidade.HouveAborto" />
+<input type="hidden" id="ObjetoSerializado" name="ObjetoSerializado" value="@Model.ObjetoSerializado" />

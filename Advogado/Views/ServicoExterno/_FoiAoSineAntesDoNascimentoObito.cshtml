@@ -1,0 +1,35 @@
+﻿@model Advogado.Models.QuestionarioSalarioMaternidade
+
+<div class="form-group">
+    @if (Model.HouveAborto == true)
+    {
+        <label style="text-align: justify">
+            Logo após sair do último emprego antes do aborto ou óbito do seu bebê, chegou a ir no SINE/CAT/PAT, ou se cadastrou no programa MAIS EMPREGO, SINE FÁCIL, para procurar vaga de trabalho?
+        </label>
+    }
+    else
+    {
+        <label style="text-align: justify">
+            Logo após sair do último emprego antes do nascimento do seu bebê, chegou a ir no SINE/CAT/PAT, ou se cadastrou no programa MAIS EMPREGO, SINE FÁCIL, para procurar vaga de trabalho?
+        </label>
+    }
+    <label class="container_radio version_2">
+        Sim
+        @Html.RadioButton("FoiAoSineAntesDoNascimentoObito", true, false, new { required = "" })
+        <span class="checkmark"></span>
+    </label>
+    <label class="container_radio version_2">
+        Não
+        @Html.RadioButton("FoiAoSineAntesDoNascimentoObito", false, false, new { required = "" })
+        <span class="checkmark"></span>
+    </label>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <input type="submit" value="Confirmar" class="btn_1 add_bottom_15">
+    </div>
+</div>
+
+<input type="hidden" id="PassoSalarioMaternidade" name="PassoSalarioMaternidade" value="@Advogado.Models.PassoSalarioMaternidade.FoiAoSineAntesDoNascimentoObito" />
+<input type="hidden" id="ObjetoSerializado" name="ObjetoSerializado" value="@Model.ObjetoSerializado" />

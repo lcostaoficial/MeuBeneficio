@@ -1,0 +1,57 @@
+﻿@using Advogado.Models
+@model IEnumerable<TipoArquivo>
+@{
+    ViewBag.Title = "Ordenar Tipos do Documentos";
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+    <link href="~/Assets/plugin/datatables/extensions/RowReorder/css/rowReorder.dataTables.css" rel="stylesheet" />
+}
+
+@section scripts
+{
+    <script src="~/Assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/RowReorder/js/dataTables.rowReorder.js"></script>
+
+    <script>
+
+        var table = $('#example').DataTable({
+            rowReorder: true,
+            select: true
+        });
+
+        table.on('row-reorder.dt', function (e, details, edit) {
+            var lista = [];
+            for (var i = 0; i < details.length; i++) {
+                var perguntaId = $(details[i].node).data("perguntaId");
+                lista.push({ "PerguntaId": perguntaId, "MudouDe": details[i].oldPosition, "Para": details[i].newPosition });
+            }
+            $.ajax({
+                type: "POST",
+                url: $('#example').data("url"),
+                data: { lista: lista },
+                success: function success(result) {
+                    if (result.Error) {
+                        swal("Mensagem", result.Error, "warning");
+                    }
+                },
+                error: function error(XMLHttpRequest, textStatus, errorThrown) {
+                    swal("Mensagem", errorThrown, "error");
+                }
+            });
+        });
+    </script>
+}
+
+<div class="col-xs-12">
+    <div class="box-content">
+        <h4 class="box-title">@ViewBag.Title</h4>
+        @Html.Partial("_PerguntasGrupo")
+    </div>
+</div>

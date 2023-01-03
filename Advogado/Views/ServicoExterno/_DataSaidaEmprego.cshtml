@@ -1,0 +1,22 @@
+﻿@model Advogado.Models.QuestionarioSalarioMaternidade
+
+<div class="form-group add_top_30">
+    @if (Model.HouveAborto == true)
+    {
+        <label for="DataSaidaEmprego">Qual a data que você saiu do último emprego de carteira assinada antes do aborto ou óbito da criança?</label>
+    }
+    else
+    {
+        <label for="DataSaidaEmprego">Qual a data que você saiu do último emprego de carteira assinada antes do nascimento do seu bebê?</label>
+    }
+    @Html.TextBox("DataSaidaEmprego", "", new { @class = "form-control required date", required = "" })
+</div>
+
+<input type="hidden" id="PassoSalarioMaternidade" name="PassoSalarioMaternidade" value="@Advogado.Models.PassoSalarioMaternidade.DataSaidaEmprego" />
+<input type="hidden" id="ObjetoSerializado" name="ObjetoSerializado" value="@Model.ObjetoSerializado" />
+
+<div class="row">
+    <div class="col-md-12">
+        <input type="submit" value="Confirmar" class="btn_1 add_bottom_15" id="submit-contact">
+    </div>
+</div>

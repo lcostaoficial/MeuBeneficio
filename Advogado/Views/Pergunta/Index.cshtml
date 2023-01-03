@@ -1,0 +1,30 @@
+﻿@using Advogado.Models
+@model IEnumerable<Pergunta>
+@{
+    ViewBag.Title = "Perguntas";
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+}
+
+@section scripts
+{
+    <script src="~/Assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+    <script src="~/Assets/scripts/datatables.demo.js"></script>
+}
+
+<div class="col-xs-12">
+    <div class="box-content">
+        <h4 class="box-title">@ViewBag.Title</h4>
+        <div class="dropdown js__drop_down">
+            <a href="@Url.Action("Novo")" class="btn btn-primary btn-circle btn-sm waves-effect waves-light"><i class="ico fa fa-plus"></i></a>
+        </div>
+        @Html.Partial("_Tabela")
+    </div>
+</div>

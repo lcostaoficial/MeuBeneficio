@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@using (Html.BeginForm("Login", "Conta", FormMethod.Post, new { @class = "form frm-single" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="inside">
+        <div class="title"><strong>Elber</strong> Mudrey</div>
+        <div class="frm-title">Sistema de Gestão de Clientes</div>
+        <div class="frm-input"><input id="Cpf" name="Cpf" type="text" placeholder="CPF" class="frm-inp cpf"><i class="fa fa-user frm-ico"></i></div>
+        <div class="frm-input"><input id="Senha" name="Senha" type="password" placeholder="Senha" class="frm-inp"><i class="fa fa-lock frm-ico"></i></div>
+        <button type="submit" class="frm-submit">Acessar<i class="fa fa-arrow-circle-right"></i></button>
+        <div class="frm-footer">Elber Mudrey © @DateTime.Now.Year.</div>
+    </div>
+}

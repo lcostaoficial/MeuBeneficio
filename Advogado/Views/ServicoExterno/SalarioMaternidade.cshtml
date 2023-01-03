@@ -1,0 +1,189 @@
+﻿@model Advogado.Models.QuestionarioSalarioMaternidade
+@{
+    Layout = "~/Views/Shared/_LayoutServico.cshtml";
+    ViewBag.Title = "Salário Maternidade";
+}
+
+@section styles
+{
+
+}
+
+@section scripts
+{
+    <script src="~/LayoutServico/plugin/jquery-mask/jquery.mask.js"></script>
+    <script src="~/LayoutServico/js/globalmask.js"></script>
+
+    <script>
+        $(function () {
+
+            "use strict";
+
+            window.SalarioMaternidade = window.SalarioMaternidade || {};
+            window.GlobalMask = window.GlobalMask || {};            
+
+            SalarioMaternidade.AguardePorFavor = function () {
+                $('#frmSalarioMaternidade').waitMe({
+                    effect: 'orbit',
+                    bg: '#ffffff',
+                    color: '#000',
+                    text: 'Aguarde por favor',
+                    maxSize: '',
+                    waitTime: -1,
+                    textPos: 'vertical',
+                    fontSize: '',
+                    source: '',
+                    onClose: function () { }
+                });
+            };
+
+            SalarioMaternidade.naoTemDireito = function (msg) {
+                $.confirm({
+                    title: 'Infelizmente você não é uma das beneficiadas!',
+                    content: '<div style="text-align: justify">' + msg + '</div>' + '\n\n <br> <div style="text-align: justify">Se você conhece alguém que tem filhos menores de cinco anos e que trabalhou com registro em carteira antes da criança nascer, compartilhe nossa pagina clicando <b><a href="https://www.facebook.com/meubeneficioro/">aqui</a></b>.</div>',
+                    type: 'orange',
+                    typeAnimated: true,
+                    buttons: {
+                        tryAgain: {
+                            text: 'Visitar página',
+                            btnClass: 'btn-orange',
+                            action: function () {
+                                window.location.href = "https://www.facebook.com/meubeneficioro/";
+                            }
+                        }
+                    }
+                });
+            };
+
+            SalarioMaternidade.temDireito = function (msg, envioMsg) {
+                var envioMsgEncode = encodeURIComponent(envioMsg);
+                $.confirm({
+                    title: 'Parabéns!',
+                    content: '<div style="text-align: justify">' + msg + '</div>' + '<br> <div style="text-align: justify"> Você também pode entrar em contato conosco pelo WhatsApp.</div>',
+                    type: 'green',
+                    typeAnimated: true,
+                    buttons: {
+                        tryAgain: {
+                            text: 'Entrar em contato',
+                            btnClass: 'btn-green',
+                            action: function () {
+                                window.location.href = "https://api.whatsapp.com/send?phone=5569992622900&text=" + envioMsgEncode;
+                            }
+                        },
+                        close: {
+                            text: 'Sair',
+                            action: function () {
+                                window.location.href = "https://www.facebook.com/meubeneficioro/";
+                            }
+                        }
+                    }
+                });
+            };
+
+            SalarioMaternidade.eventos = function () {
+                $("#frmSalarioMaternidade").submit(function (e) {
+                    e.preventDefault();
+
+                    $("input[type=submit]").attr("disabled", true);
+
+                    SalarioMaternidade.AguardePorFavor();
+
+                    var form = $(this);
+                    var url = form.attr("href");
+                    var dados = form.serialize();
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: dados,
+                        success: function success(result) {
+                            if (result.error) {
+
+                                $("#frmSalarioMaternidade").waitMe("hide");
+
+                                $.confirm({
+                                    title: 'Mensagem',
+                                    content: result.error,
+                                    type: 'red',
+                                    typeAnimated: true,
+                                    buttons: {
+                                        tryAgain: {
+                                            text: 'Ok',
+                                            btnClass: 'btn-red',
+                                            action: function () {
+                                                 $("input[type=submit]").attr("disabled", false);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+
+                                if (result.NaoTemDireito) {
+                                    $("#frmSalarioMaternidade").waitMe("hide");
+                                    SalarioMaternidade.naoTemDireito(result.NaoTemDireito);
+                                }
+
+                                if (result.TemDireito) {
+                                    $("#frmSalarioMaternidade").waitMe("hide");
+                                    SalarioMaternidade.temDireito(result.TemDireito, result.EnvioMsg);
+                                }
+
+                                if (result.html) {
+                                    $("#frmSalarioMaternidade").waitMe("hide");
+                                    $("#frmSalarioMaternidade").html(result.html);                                   
+                                    GlobalMask.carregarMascaras();
+                                }
+                            }
+                        },
+                        error: function error(XMLHttpRequest, textStatus, errorThrown) {
+                            $.confirm({
+                                title: 'Mensagem',
+                                content: errorThrown,
+                                type: 'red',
+                                typeAnimated: true,
+                                buttons: {
+                                    tryAgain: {
+                                        text: 'Ok',
+                                        btnClass: 'btn-red',
+                                        action: function () {
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            };
+
+            SalarioMaternidade.eventos();
+
+        });
+    </script>
+}
+
+<div class="container">
+    <div id="form_container">
+        <div class="row no-gutters">
+            <div class="col-lg-4">
+                <div id="left_form">
+                    <h2>Bem vindo</h2>
+                    <p style="text-align: justify">Somos uma empresa que auxilia quem busca se Aposentar, receber Auxilio Doença, Salário Maternidade ou qualquer outro benefício pago pelo GOVERNO. Fazemos seu pedido e realizamos o acompanhamos até que o mesmo seja disponibilizado. Nosso objetivo é assegurar a sua tranquilidade.</p>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/IpaWkoVOyKY?rel=0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="col-md-12">
+                    <div class="main_title_2">
+                        <h2>Salário Maternidade</h2>
+                    </div>
+                    @using (Html.BeginForm("SalarioMaternidade", "ServicoExterno", FormMethod.Post, new { @class = "fl-form fl-style-1", id = "frmSalarioMaternidade" }))
+                    {
+                        @Html.Partial("_Identificacao")
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

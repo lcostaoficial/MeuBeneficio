@@ -1,0 +1,13 @@
+﻿@model Advogado.Models.Pergunta
+
+<div class="form-group col-md-12">
+    <hr>
+    <h4>Muitas Alternativas</h4>
+    <hr>
+</div>
+
+@Html.Partial("_PerguntaMultiplaAlternativa")
+<hr>
+<div class="lista-alternativa">
+    @Html.Action("ListaAlternativas", "Pergunta", new { perguntaAlternativa = Model })
+</div>

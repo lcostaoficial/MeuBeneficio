@@ -1,0 +1,44 @@
+﻿.field-validation-error {
+    color: #e80c4d;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.input-file .input-group-addon {
+    border: 0px;
+    padding: 0px;
+}
+
+    .input-file .input-group-addon .btn {
+        border-radius: 0 4px 4px 0
+    }
+
+    .input-file .input-group-addon input {
+        cursor: pointer;
+        position: absolute;
+        width: 72px;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        filter: alpha(opacity=0);
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        opacity: 0;
+        background-color: transparent;
+        color: transparent;
+    }

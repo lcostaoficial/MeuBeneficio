@@ -1,0 +1,19 @@
+﻿@model Advogado.Models.Funcionario
+@{
+    ViewBag.Title = "Editar Funcionário";
+}
+
+<div class="row small-spacing">
+    <div class="col-lg-12 col-xs-12">
+        <div class="box-content card white">
+            <h4 class="box-title">@ViewBag.Title</h4>
+            <div class="card-content">
+                @using (Html.BeginForm("Editar", "Funcionario", FormMethod.Post, new { @class = "form" }))
+                {
+                    @Html.HiddenFor(m => m.FuncionarioId)
+                    @Html.Partial("_Form")
+                }
+            </div>
+        </div>
+    </div>
+</div>

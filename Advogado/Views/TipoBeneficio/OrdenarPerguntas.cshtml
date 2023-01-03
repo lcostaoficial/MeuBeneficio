@@ -1,0 +1,112 @@
+﻿@using Advogado.Models
+@model IEnumerable<Pergunta>
+@{
+    ViewBag.Title = "Ordenar Perguntas";
+
+    var tipoBeneficioId = (int)ViewBag.TipoBeneficioId;
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+    <link href="~/Assets/plugin/datatables/extensions/RowReorder/css/rowReorder.dataTables.css" rel="stylesheet" />
+}
+
+@section scripts
+{
+    <script src="~/Assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/RowReorder/js/dataTables.rowReorder.js"></script>
+
+    <script>
+
+        var table = $('#example').DataTable({
+
+            rowReorder: {
+                selector: 'tr',
+                update: false,
+            },
+
+            columnDefs: [
+                {
+                    "targets": [0],
+                    "visible": false                   
+                }               
+            ],
+
+            select: true,
+
+            paging: false,
+
+            searching: false,  
+
+            bSort: false,            
+
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ resultados por página",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                },
+                "select": {
+                    "rows": {
+                        "_": "Selecionado %d linhas",
+                        "0": "Nenhuma linha selecionada",
+                        "1": "Selecionado 1 linha"
+                    }
+                }
+            }
+        });
+
+        table.on('row-reorder.dt', function (e, details, edit) {
+            var lista = [];
+            for (var i = 0; i < details.length; i++) {
+                var perguntaId = $(details[i].node).data("perguntaId");
+                lista.push({ "PerguntaId": perguntaId, "MudouDe": details[i].oldPosition, "Para": details[i].newPosition });
+            }
+            $.ajax({
+                type: "POST",
+                url: $('#example').data("url"),
+                data: { lista: lista, tipoBeneficioId: @tipoBeneficioId, ordemVirtual: $("#ordemVirtual").val() },
+                success: function success(result) {
+                    if (result.success) {
+                        $("#ordemVirtual").val(result.OrdemVirtual);
+                    }
+
+                    if (result.Error) {
+                        swal("Mensagem", result.Error, "warning");
+                    }
+                },
+                error: function error(XMLHttpRequest, textStatus, errorThrown) {
+                    swal("Mensagem", errorThrown, "error");
+                }
+            });
+        });
+    </script>
+}
+
+<div class="col-xs-12">
+    <div class="box-content">
+        <h4 class="box-title">@ViewBag.Title</h4>
+        @Html.Partial("_Perguntas")
+    </div>
+</div>

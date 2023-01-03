@@ -1,0 +1,227 @@
+﻿@using Advogado.Models;
+@model IEnumerable<Pergunta>
+@{
+    var index = 0;
+    int casoId = ViewBag.CasoId;
+}
+
+@Html.AntiForgeryToken()
+
+<input type="hidden" id="casoId" name="casoId" value="@casoId" />
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Questionário do benefício</h4>
+    <hr class="my-4">
+</div>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="col-md-12">
+        <p>Não há questionário a ser exibido.</p>
+    </div>
+}
+else
+{
+    foreach (var pergunta in Model)
+    {
+        /* Pergunta com resposta livre */
+        if (pergunta.MultiplaAlternativa == false)
+        {
+            <div class="form-group col-md-12">
+                @Html.Label(pergunta.Enunciado) @(pergunta.Obrigatoria ? Html.Raw("<label style='color: red' title='Este campo é obrigatório'>*</label>") : Html.Raw(string.Empty))
+                @if (pergunta.Respostas != null && pergunta.Respostas.Any())
+                {
+                    <textarea maxlength="500" id="Respostas[@index].RespostaDescritiva" name="Respostas[@index].RespostaDescritiva" class="form-control">@pergunta.Respostas.First().RespostaDescritiva</textarea>
+                    <input type="hidden" id="Respostas[@index].RespostaId" name="Respostas[@index].RespostaId" value="@pergunta.Respostas.First().RespostaId" />
+                }
+                else
+                {
+                    <textarea maxlength="500" id="Respostas[@index].RespostaDescritiva" name="Respostas[@index].RespostaDescritiva" class="form-control"></textarea>
+                }
+                <input type="hidden" id="Respostas[@index].PerguntaId" name="Respostas[@index].PerguntaId" value="@pergunta.PerguntaId" />
+                <input type="hidden" id="Respostas[@index].CasoId" name="Respostas[@index].CasoId" value="@casoId" />
+            </div>
+        }
+
+        /* Pergunta com resposta livre */
+        if (pergunta.MultiplaAlternativa == true)
+        {
+            if (pergunta.MultiplaResposta == true)
+            {
+                /* Marcar mais de uma resposta */
+                <div class="form-group col-md-12">
+
+                    @Html.Label(pergunta.Enunciado) @(pergunta.Obrigatoria ? Html.Raw("<label style='color: red' title='Este campo é obrigatório'>*</label>") : Html.Raw(string.Empty))
+
+                    @if (pergunta.Respostas != null && pergunta.Respostas.Any())
+                    {
+
+                        /* Já possui resposta */
+
+                        if (pergunta.CaixaSelecao == true)
+                        {
+                            /* Possui caixa de seleção */
+
+                            <select id="Respostas[@index].AlternativasIds" name="Respostas[@index].AlternativasIds" class="form-control selectpicker" data-live-search="true" data-size="5" multiple="multiple" title="Selecione as respostas...">
+                                @foreach (var alternativa in pergunta.Alternativas)
+                                {
+                                    var resposta = pergunta.Respostas.First();
+                                    var existeRespostaNaAlternativa = resposta.Alternativas.Any(x => x.AlternativaId == alternativa.AlternativaId);
+                                    if (existeRespostaNaAlternativa)
+                                    {
+                                        <option value="@alternativa.AlternativaId" selected>@alternativa.Descricao</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@alternativa.AlternativaId">@alternativa.Descricao</option>
+                                    }
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            /* Não possui caixa de seleção */
+                            foreach (var alternativa in pergunta.Alternativas)
+                            {
+                                var resposta = pergunta.Respostas.First();
+                                var existeRespostaNaAlternativa = resposta.Alternativas.Any(x => x.AlternativaId == alternativa.AlternativaId);
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="Respostas[@index].AlternativasIds" name="Respostas[@index].AlternativasIds" value="@alternativa.AlternativaId" @(existeRespostaNaAlternativa == true ? "checked" : string.Empty)>
+                                    <label class="form-check-label">
+                                        @alternativa.Descricao
+                                    </label>
+                                </div>
+                            }
+                        }
+
+                        <input type="hidden" id="Respostas[@index].RespostaId" name="Respostas[@index].RespostaId" value="@pergunta.Respostas.First().RespostaId" />
+                    }
+                    else
+                    {
+                        /* Não possui resposta */
+
+                        if (pergunta.CaixaSelecao == true)
+                        {
+                            /* Possui caixa de seleção */
+
+                            <select id="Respostas[@index].AlternativasIds" name="Respostas[@index].AlternativasIds" class="form-control selectpicker" data-live-search="true" data-size="5" multiple="multiple" title="Selecione as respostas...">
+                                @foreach (var alternativa in pergunta.Alternativas)
+                                {
+                                    <option value="@alternativa.AlternativaId">@alternativa.Descricao</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            /* Não possui caixa de seleção */
+
+                            foreach (var alternativa in pergunta.Alternativas)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="Respostas[@index].AlternativasIds" name="Respostas[@index].AlternativasIds" value="@alternativa.AlternativaId">
+                                    <label class="form-check-label">
+                                        @alternativa.Descricao
+                                    </label>
+                                </div>
+                            }
+                        }
+                    }
+                    <input type="hidden" id="Respostas[@index].PerguntaId" name="Respostas[@index].PerguntaId" value="@pergunta.PerguntaId" />
+                    <input type="hidden" id="Respostas[@index].CasoId" name="Respostas[@index].CasoId" value="@casoId" />
+                </div>
+            }
+            else
+            {
+                /* Marcar apenas uma resposta */
+
+                <div class="form-group col-md-12">
+
+                    @Html.Label(pergunta.Enunciado) @(pergunta.Obrigatoria ? Html.Raw("<label style='color: red' title='Este campo é obrigatório'>*</label>") : Html.Raw(string.Empty))
+
+                    @if (pergunta.Respostas != null && pergunta.Respostas.Any())
+                    {
+
+                        /* Já possui resposta */
+
+                        if (pergunta.CaixaSelecao == true)
+                        {
+                            /* Possui caixa de seleção */
+
+                            <select id="Respostas[@index].AlternativaId" name="Respostas[@index].AlternativaId" class="form-control selectpicker" data-live-search="true" data-size="5" title="Selecione a resposta...">
+                                @{
+                                    var alternativas = pergunta.Respostas.First().Alternativas;
+                                    int alternativaRespostaId = (alternativas != null && alternativas.Any() ? alternativas.First().AlternativaId : 0);
+                                }
+                                @foreach (var alternativa in pergunta.Alternativas)
+                                {
+                                    if (alternativa.AlternativaId == alternativaRespostaId)
+                                    {
+                                        <option value="@alternativa.AlternativaId" selected>@alternativa.Descricao</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@alternativa.AlternativaId">@alternativa.Descricao</option>
+                                    }
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            /* Não possui caixa de seleção */
+
+                            var alternativas = pergunta.Respostas.First().Alternativas;
+                            int alternativaRespostaId = (alternativas != null && alternativas.Any() ? alternativas.First().AlternativaId : 0);
+
+                            foreach (var alternativa in pergunta.Alternativas)
+                            {
+                                <div class="form-check">
+                                    <label><input type="radio" id="Respostas[@index].AlternativasIds" name="Respostas[@index].AlternativasIds" value="@alternativa.AlternativaId" @(alternativa.AlternativaId == alternativaRespostaId ? "checked" : string.Empty)> @alternativa.Descricao</label>
+                                </div>
+                            }
+                        }
+
+                        <input type="hidden" id="Respostas[@index].RespostaId" name="Respostas[@index].RespostaId" value="@pergunta.Respostas.First().RespostaId" />
+                    }
+                    else
+                    {
+                        /* Não possui resposta */
+
+                        if (pergunta.CaixaSelecao == true)
+                        {
+
+                            /* Possui caixa de seleção */
+
+                            <select id="Respostas[@index].AlternativaId" name="Respostas[@index].AlternativaId" class="form-control selectpicker" data-live-search="true" data-size="5" title="Selecione a resposta...">
+                                @foreach (var alternativa in pergunta.Alternativas)
+                                {
+                                    <option value="@alternativa.AlternativaId">@alternativa.Descricao</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            /* Não possui caixa de seleção */
+
+                            foreach (var alternativa in pergunta.Alternativas)
+                            {
+                                <div class="form-check">
+                                    <label><input type="radio" id="Respostas[@index].AlternativasIds" name="Respostas[@index].AlternativasIds" value="@alternativa.AlternativaId"> @alternativa.Descricao</label>
+                                </div>
+                            }
+                        }
+                    }
+
+                    <input type="hidden" id="Respostas[@index].PerguntaId" name="Respostas[@index].PerguntaId" value="@pergunta.PerguntaId" />
+                    <input type="hidden" id="Respostas[@index].CasoId" name="Respostas[@index].CasoId" value="@casoId" />
+                </div>
+            }
+        }
+        index++;
+    }
+}
+
+
+<div class="form-group col-md-12">
+    <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light" onclick="javascript:void(0)">Salvar</button>
+</div>

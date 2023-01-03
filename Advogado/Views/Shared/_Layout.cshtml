@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Página Modelo - Elber Mudrey</title>
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="~/Assets/styles/style.min.css">
+
+    <!-- Themify Icon -->
+    <link rel="stylesheet" href="~/Assets/fonts/themify-icons/themify-icons.css">
+
+    <!-- mCustomScrollbar -->
+    <link rel="stylesheet" href="~/Assets/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css">
+
+    <!-- Waves Effect -->
+    <link rel="stylesheet" href="~/Assets/plugin/waves/waves.min.css">
+
+    <!-- Sweet Alert -->
+    <link rel="stylesheet" href="~/Assets/plugin/sweet-alert/sweetalert.css">
+
+    <link href="~/Assets/styles/validation.css" rel="stylesheet" />
+
+    @RenderSection("styles", required: false)
+
+</head>
+
+<body>
+    <div class="main-menu">
+
+        <header class="header">
+            <a href="@Url.Action("Index", "Caso")" class="logo"><i class="ico ti-thumb-up"></i>Elber Mudrey</a>
+            <button type="button" class="button-close fa fa-times js__menu_close"></button>
+        </header>
+
+        <div class="content">
+            <div class="navigation">
+                <h5 class="title">Principal</h5>
+                <ul class="menu js__accordion">
+                    <li>
+                        <a class="waves-effect" href="@Url.Action("Index", "Caso")"><i class="menu-icon ti-layers-alt"></i><span>Controle de Casos</span></a>
+                    </li>
+                    <li>
+                        <a class="waves-effect" href="@Url.Action("Index", "Cliente")"><i class="menu-icon ti-id-badge"></i><span>Controle de Clientes</span></a>
+                    </li>
+                    <li>
+                        <a class="waves-effect" href="@Url.Action("QuadroGeral", "Tarefa")"><i class="menu-icon ti-check-box"></i><span>Quadro Geral de Tarefas</span></a>
+                    </li>
+                </ul>
+                @if (Advogado.Models.Funcionario.FuncionarioLogado().Perfil == Advogado.Models.Perfil.Administrador)
+                {
+                    <h5 class="title">Controle</h5>
+                    <ul class="menu js__accordion">
+                        <li>
+                            <a class="waves-effect" href="@Url.Action("Index", "TipoBeneficio")"><i class="menu-icon ti-star"></i><span>Benefícios</span></a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="@Url.Action("Index", "TipoDocumento")"><i class="menu-icon ti-clip"></i><span>Documentos</span></a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="@Url.Action("Index", "Pergunta")"><i class="menu-icon ti-comment"></i><span>Perguntas</span></a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="@Url.Action("Index", "Funcionario")"><i class="menu-icon ti-user"></i><span>Funcionários</span></a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="@Url.Action("Index", "Relatorio")"><i class="menu-icon ti-printer"></i><span>Relatórios</span></a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-navbar">
+        <div class="pull-left">
+            <button type="button" class="menu-mobile-button glyphicon glyphicon-menu-hamburger js__menu_mobile"></button>
+            <h1 class="page-title">
+                @if (Advogado.Models.Funcionario.FuncionarioLogado().Perfil == Advogado.Models.Perfil.Administrador)
+                {
+                    @Html.Raw("Modo Administrador")
+                }
+                @if (Advogado.Models.Funcionario.FuncionarioLogado().Perfil == Advogado.Models.Perfil.Secretaria)
+                {
+                    @Html.Raw("Modo Secretária")
+                }
+            </h1>
+        </div>
+        <div class="pull-right">
+            <div class="ico-item">
+                <i class="ti-user"></i>
+                <ul class="sub-ico-item">
+                    <li><a href="#" onclick="AlterarSenha.abrirModal()">Alterar Senha</a></li>
+                    <li><a href="@Url.Action("Sair", "Conta")">Sair</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pull-right">
+            <div style="margin-left: 15px; line-height: 50px;">
+                <p>@Advogado.Models.Funcionario.FuncionarioLogado().Nome</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="wrapper">
+        <div class="main-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/Assets/scripts/jquery.min.js"></script>
+    <script src="~/Assets/scripts/modernizr.min.js"></script>
+    <script src="~/Assets/plugin/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/Assets/plugin/nprogress/nprogress.js"></script>
+    <script src="~/Assets/plugin/sweet-alert/sweetalert.min.js"></script>
+    <script src="~/Assets/plugin/waves/waves.min.js"></script>
+    <script src="~/Assets/plugin/chart/sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/Assets/scripts/chart.sparkline.init.min.js"></script>
+    <script src="~/Assets/scripts/main.min.js"></script>
+    <script src="~/Assets/scripts/global.js"></script>
+    <script src="~/Assets/plugin/jquery-mask/jquery.mask.js"></script>
+    <script src="~/Assets/scripts/globalmask.js"></script>
+
+    <script>
+        $(function () {
+
+            "use strict";
+
+            window.AlterarSenha = window.AlterarSenha || {};
+
+            AlterarSenha.abrirModal = function () {
+                $("#modalAlterarSenha").modal("show");
+            };
+
+            AlterarSenha.salvarSenha = function () {
+                var novaSenha = $("#NovaSenha").val();
+                var url = $("#modalAlterarSenha").data("url");
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: { novaSenha: novaSenha },
+                    success: function (result) {
+                        if (result.Success) {
+                            swal("Mensagem", result.Success, "success");
+                             $("#modalAlterarSenha").modal("hide");
+                        }
+                        if (result.Error) {
+                            swal("Mensagem", result.Error, "warning");                           
+                        }
+                    },
+                    error: function error(XMLHttpRequest, textStatus, errorThrown) {
+                        swal("Mensagem", errorThrown, "error");
+                    }
+                });
+
+                $("#modalAlterarSenha").modal("show");
+            };
+        });
+    </script>
+
+    @Html.Partial("_Message")
+    @RenderSection("scripts", required: false)
+    @RenderSection("modal", required: false)
+    @Html.Partial("_AlterarSenha")
+</body>
+</html>

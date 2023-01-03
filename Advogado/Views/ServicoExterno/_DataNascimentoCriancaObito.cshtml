@@ -1,0 +1,25 @@
+﻿@model Advogado.Models.QuestionarioSalarioMaternidade
+
+@if (Model.HouveAborto == true)
+{
+    <div class="form-group add_top_30">
+        <label for="DataNascimentoCrianca">Qual foi a data que ocorreu o aborto ou óbito da criança?</label>
+        @Html.TextBox("DataNascimentoObitoCrianca", "", new { @class = "form-control required date", required = "" })
+    </div>
+}
+else
+{
+    <div class="form-group add_top_30">
+        <label for="DataNascimentoCrianca">Qual a data de nascimento ou previsão do parto da sua criança?</label>
+        @Html.TextBox("DataNascimentoObitoCrianca", "", new { @class = "form-control required date", required = "" })
+    </div>
+}
+
+<input type="hidden" id="PassoSalarioMaternidade" name="PassoSalarioMaternidade" value="@Advogado.Models.PassoSalarioMaternidade.DataNascimentoObitoCrianca" />
+<input type="hidden" id="ObjetoSerializado" name="ObjetoSerializado" value="@Model.ObjetoSerializado" />
+
+<div class="row">
+    <div class="col-md-12">
+        <input type="submit" value="Confirmar" class="btn_1 add_bottom_15" id="submit-contact">
+    </div>
+</div>

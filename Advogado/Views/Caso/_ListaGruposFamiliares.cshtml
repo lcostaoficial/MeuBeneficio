@@ -1,0 +1,60 @@
+﻿@using Advogado.Models
+@model List<GrupoFamiliar>
+
+@if (Model != null && Model.Any())
+{
+    for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="row form-group">
+            <input id="@($"GruposFamiliares[{i}].GrupoFamiliarId")" name="@($"GruposFamiliares[{i}].GrupoFamiliarId")" type="hidden" value="@Model[i].GrupoFamiliarId">
+            <div class="col-md-12">
+                @Html.Label($"Grupo Familiar {i + 1}")
+            </div>
+            <input id="@($"GruposFamiliares[{i}].CasoId")" name="@($"GruposFamiliares[{i}].CasoId")" type="hidden" value="@Model[i].CasoId">
+            <input id="@($"GruposFamiliares[{i}].Ativo")" name="@($"GruposFamiliares[{i}].Ativo")" type="hidden" value="True">
+            <div class="col-md-3">
+                <input class="form-control" id="@($"GruposFamiliares[{i}].Nome")" name="@($"GruposFamiliares[{i}].Nome")" type="text" value="@Model[i].Nome">
+            </div>
+            <div class="col-md-2">
+                <input class="form-control cpf-gf" id="@($"GruposFamiliares[{i}].Cpf")" name="@($"GruposFamiliares[{i}].Cpf")" type="text" value="@Model[i].Cpf">
+            </div>
+            <div class="col-md-2">
+                <input class="form-control date" id="@($"GruposFamiliares[{i}].DataNascimento")" name="@($"GruposFamiliares[{i}].DataNascimento")" type="text" value="@Model[i].DataNascimento.ToShortDateString()">
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="@($"GruposFamiliares[{i}].GrauParentesco")" name="@($"GruposFamiliares[{i}].GrauParentesco")" type="text" value="@Model[i].GrauParentesco">
+            </div>
+            <div class="col-md-2">
+                <a href="@ViewBag.UrlRemove" data-index="@i" class="btn btn-danger col-md-12 remove-grupofamiliar" style="color: white">
+                    Remover
+                </a>
+            </div>
+        </div>
+    }
+}
+
+
+<div class="row form-group">
+    <div class="col-md-12">
+        @Html.Label($"Novo Grupo Familiar")
+    </div>
+    <div class="col-md-3">
+        <input id="Nome" name="Nome" type="text" class="form-control" placeholder="Nome">
+    </div>
+    <div class="col-md-2">
+        <input id="Cpf" name="Cpf" type="text" class="form-control cpf-gf" placeholder="CPF">
+    </div>
+    <div class="col-md-2">
+        <input id="DataNascimento" name="DataNascimento" type="text" class="form-control date" placeholder="Data de Nascimento">
+    </div>
+    <div class="col-md-3">
+        <input id="GrauParentesco" name="GrauParentesco" type="text" class="form-control" placeholder="Grau de Parentesco">
+    </div>
+    <div class="col-md-2">
+        <a href="@ViewBag.UrlAdd" class="btn btn-success col-md-12 add-grupofamiliar" style="color: white">
+            Confirmar
+        </a>
+    </div>
+</div>
+
+<input type="hidden" id="index" name="index" />

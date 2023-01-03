@@ -1,0 +1,37 @@
+﻿@using Advogado.Models
+@model List<Alternativa>
+
+@if (Model != null && Model.Any())
+{
+    for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="form-group col-md-12">
+            <input id="@($"Alternativas[{i}].AlternativaId")" name="@($"Alternativas[{i}].AlternativaId")" type="hidden" value="@Model[i].AlternativaId">
+            @Html.Label($"Alternativa {i + 1}")
+            <div class="input-group">
+                <input id="@($"Alternativas[{i}].PerguntaId")" name="@($"Alternativas[{i}].PerguntaId")" type="hidden" value="@Model[i].PerguntaId">
+                <input class="form-control" id="@($"Alternativas[{i}].Ativo")" name="@($"Alternativas[{i}].Ativo")" type="hidden" value="True">
+                <input class="form-control" id="@($"Alternativas[{i}].Descricao")" name="@($"Alternativas[{i}].Descricao")" type="text" value="@Model[i].Descricao">
+                <span class="input-group-btn">
+                    <a href="@ViewBag.UrlRemove" data-index="@i" class="btn btn-danger remove-alternativa" style="color: white">
+                        Remover
+                    </a>
+                </span>
+            </div>   
+        </div>
+    }
+}
+
+<div class="form-group col-md-12">
+    @Html.Label("Nova Alternativa")
+    <div class="input-group">
+        <input id="Descricao" name="Descricao" type="text" class="form-control">
+        <span class="input-group-btn">
+            <a href="@ViewBag.UrlAdd" class="btn btn-success add-alternativa" style="color: white">
+                Adicionar
+            </a>
+        </span>
+    </div>   
+</div>
+
+<input type="hidden" id="index" name="index" />

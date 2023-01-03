@@ -1,0 +1,11 @@
+﻿@model Advogado.Models.Caso
+
+<div class="form-group col-md-12" style="margin-bottom: 0px">
+    <h4>Grupo Familiar</h4>
+    <hr class="my-4">
+</div>
+
+
+<div class="lista-gruposfamiliares form-group col-md-12">
+    @Html.Action("ListaGruposFamiliares", "Caso", new { casoGrupoFamiliar = Model })
+</div>

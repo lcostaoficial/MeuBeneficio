@@ -1,0 +1,32 @@
+﻿@using Advogado.Models;
+@using Advogado.ViewsModels;
+@using System.Web.Script.Serialization;
+
+@model IEnumerable<Pergunta>
+@{
+    var index = 0;
+    var list = Model.OrderBy(x => x.Ordem);
+    var ordemVirtual = new List<OrdemVirtualPerguntaVm>();
+}
+
+<table id="example" class="table table-responsive table-striped table-bordered display" style="width:100%" data-url="@Url.Action("OrdenarPerguntasLista", "TipoBeneficio")">
+    <thead>
+        <tr>
+            <th>Ordem</th>
+            <th>Enunciado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in list)
+        {
+            <tr style="cursor: move" data-pergunta-id="@item.PerguntaId" @{ if (!item.Ativo) { @Html.Raw("style=\"background-color: #fdeef2\"")  ; } }>
+                <td>@index</td>
+                <td>@item.Enunciado</td>
+            </tr>
+            ordemVirtual.Add(new OrdemVirtualPerguntaVm { PerguntaId = item.PerguntaId, Ordem = index });
+            index++;
+        }
+    </tbody>
+</table>
+
+<input id="ordemVirtual" name="ordemVirtual" value="@(new JavaScriptSerializer().Serialize(ordemVirtual))" type="hidden" />

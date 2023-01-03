@@ -1,0 +1,38 @@
+﻿@model Advogado.Models.Movimentacao
+
+<div class="modal fade" id="modalNovoAcompanhamento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Novo acompanhamento</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("SalvarCasoComMovimentacao", "Caso", FormMethod.Post, new { @class = "form", id = "frmSalvarCasoComMovimentacao", enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(m => m.CasoId)
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            @Html.LabelFor(m => m.TipoMovimento) <label style="color: red" title="Este campo é obrigatório">*</label>
+                            @Html.EnumDropDownListFor(m => m.TipoMovimento, "Selecione...", new { @class = "form-control", required = "" })
+                            @Html.ValidationMessageFor(m => m.TipoMovimento)
+                        </div>
+                        <div class="form-group col-md-12">
+                            @Html.LabelFor(m => m.Descricao) <label style="color: red" title="Este campo é obrigatório">*</label>
+                            @Html.TextAreaFor(m => m.Descricao, new { @class = "form-control", placeholder = "Informe os detalhes deste acompanhamento", required = "" })
+                            @Html.ValidationMessageFor(m => m.Descricao)
+                        </div>
+                        <div class="col-md-12" id="div-modelo-arquivo">
+                            <label>Arquivo</label> <label style="color: blue" title="Este campo é opcional">Opcional</label>
+                            <input type="file" id="ArquivoBinario" name="ArquivoBinario">
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" onclick="$('#frmSalvarCasoComMovimentacao').submit()">Salvar</button>
+                <button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿@model Advogado.Models.QuestionarioSalarioMaternidade
+
+<div class="form-group add_top_30">
+    <label for="Nome">Qual seu nome?</label>
+    @Html.TextBoxFor(m => m.Nome, new { @class = "form-control required", required = "" })
+</div>
+<div class="form-group add_top_30">
+    <label for="Telefone">Qual seu telefone/WhatsApp (com DDD)?</label>
+    @Html.TextBoxFor(m => m.Telefone, new { @class = "form-control required telefonemovel", required = "" })
+</div>
+<div class="form-group add_top_30">
+    <label for="Cidade">Qual sua cidade?</label>
+    @Html.TextBoxFor(m => m.Cidade, new { @class = "form-control required", required = "" })
+</div>
+
+<div class="form-group add_top_30">
+    <label for="Estado">Qual seu estado?</label>
+    @Html.EnumDropDownListFor(m => m.Estado, "Selecione...", new { @class = "form-control" })
+</div>
+
+<input type="hidden" id="PassoSalarioMaternidade" name="PassoSalarioMaternidade" value="@Advogado.Models.PassoSalarioMaternidade.Identificacao" />
+
+<div class="row">
+    <div class="col-md-12">
+        <input type="submit" value="Confirmar" class="btn_1 add_bottom_15" id="submit-contact">
+    </div>
+</div>

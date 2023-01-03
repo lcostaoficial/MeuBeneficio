@@ -1,0 +1,62 @@
+﻿@using Advogado.Models
+@model IEnumerable<Caso>
+@{ ViewBag.Title = "Casos"; }
+
+@section styles
+{
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/Assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+}
+
+@section scripts
+{
+    <script src="~/Assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+    <script src="~/Assets/scripts/datatables.demo.js"></script>
+
+    <script src="~/Assets/plugin/pdfmake/pdfmake.js"></script>
+    <script src="~/Assets/plugin/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Assets/scripts/impressao.js"></script>
+
+    <script>
+        $(document).on("click", "#btn-excluir", function () {
+            var url = $(this).data("url");
+            swal({
+                title: 'Deseja realmente excluir este caso e tudo relacionado a ele?',
+                text: 'Essa alteração só se efetivará após confirmação',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'confirm-class',
+                cancelButtonClass: 'cancel-class',
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $(location).attr('href', url);
+                } else {
+                    swal(
+                        'Cancelada',
+                        'Operação cancelada com sucesso!',
+                        'error'
+                    );
+                }
+            });
+        });
+    </script>
+}
+
+<div class="col-xs-12">
+    <div class="box-content">
+        <h4 class="box-title">@ViewBag.Title</h4>
+        <div class="dropdown js__drop_down">
+            <a href="@Url.Action("Novo")" class="btn btn-primary btn-circle btn-sm waves-effect waves-light"><i class="ico fa fa-plus"></i></a>
+        </div>
+        @Html.Partial("_Tabela")
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿@model Advogado.Models.Pergunta
+@{
+    ViewBag.Title = "Editar Pergunta";
+}
+
+@section scripts
+{
+    <script src="~/Assets/scripts/alternativa.js"></script>
+    <script src="~/Assets/scripts/pergunta.js"></script>
+    <script src="~/Assets/scripts/pergunta-editar.js"></script>
+}
+
+<div class="row small-spacing">
+    <div class="col-lg-12 col-xs-12">
+        <div class="box-content card white">
+            <h4 class="box-title">@ViewBag.Title</h4>
+            <div class="card-content">
+                @using (Html.BeginForm("Editar", "Pergunta", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.PerguntaId, new
+                    {
+                        data_url = $"{Url.Action("AtualizarAlternativas", "Pergunta", new { id = Model.PerguntaId })}",
+                        data_count = $"{(Model.Alternativas != null ? Html.Raw(Model.Alternativas.Count) : Html.Raw(0))}"
+                    });
+
+                    @Html.HiddenFor(m => m.Ordem);
+
+                    @Html.Partial("_Form");
+                }
+            </div>
+        </div>
+    </div>
+</div>
